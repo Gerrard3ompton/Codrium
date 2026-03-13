@@ -64,32 +64,6 @@ const revealObserver = new IntersectionObserver(entries => {
 
 revealEls.forEach(el => revealObserver.observe(el));
 
-/* ── Contact form ── */
-const form = document.getElementById('contactForm');
-if (form) {
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const btn      = form.querySelector('button[type="submit"]');
-    const original = btn.textContent;
-
-    btn.disabled      = true;
-    btn.textContent   = 'Sending…';
-    btn.style.opacity = '.7';
-
-    setTimeout(() => {
-      btn.textContent        = '✓ Message sent!';
-      btn.style.background   = 'linear-gradient(135deg, #34A853, #2d9148)';
-      btn.style.opacity      = '1';
-      form.reset();
-      setTimeout(() => {
-        btn.disabled       = false;
-        btn.textContent    = original;
-        btn.style.background = '';
-      }, 3500);
-    }, 1400);
-  });
-}
-
 /* ── Cursor-following radial glow on hero ── */
 const heroBg = document.querySelector('.hero__bg');
 if (heroBg) {

@@ -589,18 +589,6 @@ input, textarea, select, button { font-family: inherit; }
 .contact__method p  { color: var(--text-secondary); font-size: .88rem; }
 .contact__method-value { font-size: .9rem; font-weight: 600; color: var(--blue); margin-top: .3rem; }
 
-.contact__form-wrap {
-  max-width: 680px;
-  margin-inline: auto;
-}
-.contact__form {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 2.5rem;
-  display: flex; flex-direction: column; gap: 1.2rem;
-}
-.form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .form__group { display: flex; flex-direction: column; gap: .45rem; }
 .form__group label { font-size: .85rem; font-weight: 500; color: var(--text-secondary); }
 .form__group input,
@@ -623,8 +611,6 @@ input, textarea, select, button { font-family: inherit; }
   box-shadow: 0 0 0 3px var(--blue-glow);
 }
 .form__group select option { background: var(--bg-3); }
-.form__note { font-size: .8rem; color: var(--text-muted); text-align: center; }
-
 /* ══════════════════════════════════════════
    FOOTER
 ══════════════════════════════════════════ */
@@ -837,7 +823,6 @@ button.contact__method-value {
   .nav__burger { display: flex; }
   .testimonials__grid { grid-template-columns: 1fr; }
   .process__track { grid-template-columns: 1fr; }
-  .form__row { grid-template-columns: 1fr; }
   .footer__links { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .booking-modal { grid-template-columns: 1fr; }
