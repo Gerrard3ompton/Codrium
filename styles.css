@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────
-   AXIUMS  —  Styles
+   CODRIUM  —  Styles
    Dark / Light mode · Google colour accent system
 ───────────────────────────────────────────── */
 
@@ -36,10 +36,10 @@
 }
 
 [data-theme="light"] {
-  --bg-0:    #ffffff;
-  --bg-1:    #f8f9fa;
-  --bg-2:    #f1f3f4;
-  --bg-3:    #e8eaed;
+  --bg-0:    #faf7f2;
+  --bg-1:    #f3efe6;
+  --bg-2:    #ece7db;
+  --bg-3:    #e3ddd1;
   --border:  rgba(0,0,0,0.1);
   --text-primary:   #202124;
   --text-secondary: #5f6368;
@@ -128,7 +128,7 @@ input, textarea, select, button { font-family: inherit; }
    LOGO — coloured A
 ══════════════════════════════════════════ */
 .logo-a {
-  background: linear-gradient(135deg, #4285F4 0%, #EA4335 33%, #FBBC04 66%, #34A853 100%);
+  background: conic-gradient(from 0deg at 50% 50%, #4285F4 0deg 90deg, #EA4335 90deg 180deg, #FBBC04 180deg 270deg, #34A853 270deg 360deg);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -151,9 +151,9 @@ input, textarea, select, button { font-family: inherit; }
   border-bottom: 1px solid var(--border);
   transition: background var(--transition);
 }
-[data-theme="light"] .nav { background: rgba(255,255,255,.7); }
+[data-theme="light"] .nav { background: rgba(250,247,242,.7); }
 .nav.scrolled { background: rgba(8,12,16,.92); }
-[data-theme="light"] .nav.scrolled { background: rgba(255,255,255,.96); }
+[data-theme="light"] .nav.scrolled { background: rgba(250,247,242,.96); }
 .nav__logo {
   font-family: var(--font-display);
   font-size: 1.65rem;
@@ -359,6 +359,11 @@ input, textarea, select, button { font-family: inherit; }
 .c-pun  { color: var(--text-secondary); }
 .c-prop { color: #89dceb; }
 .c-comment { color: #6c7086; font-style: italic; }
+[data-theme="light"] .c-kw     { color: #1d4ed8; }
+[data-theme="light"] .c-fn     { color: #7c3aed; }
+[data-theme="light"] .c-str    { color: #15803d; }
+[data-theme="light"] .c-prop   { color: #0e7490; }
+[data-theme="light"] .c-comment{ color: #6b7280; }
 .code-cursor {
   display: inline-block;
   width: 2px; height: 1.1em;
