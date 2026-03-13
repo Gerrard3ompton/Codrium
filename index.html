@@ -34,13 +34,22 @@
 
   <!-- Mobile drawer -->
   <div class="drawer" id="drawer">
-    <button class="drawer__close" id="drawerClose">✕</button>
-    <ul>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">How it works</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="btn btn--primary btn--full">Get in touch</a></li>
-    </ul>
+    <div class="drawer__header">
+      <a class="drawer__logo" href="#">
+        <span class="logo-a">C</span><span style="color:#EA4335">o</span><span style="color:#FBBC04">d</span><span style="color:#4285F4">r</span><span style="color:#34A853">i</span><span style="color:#EA4335">u</span><span style="color:#FBBC04">m</span>
+      </a>
+      <button class="drawer__close" id="drawerClose" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="drawer__nav">
+      <a href="#services">Services</a>
+      <a href="#process">How it works</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="drawer__footer">
+      <a href="#contact" class="btn btn--primary btn--full">Get in touch</a>
+    </div>
   </div>
   <div class="drawer-overlay" id="drawerOverlay"></div>
 

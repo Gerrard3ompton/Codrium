@@ -214,28 +214,70 @@ input, textarea, select, button { font-family: inherit; }
 .drawer {
   position: fixed;
   inset: 0 0 0 auto;
-  width: min(320px, 90vw);
-  background: var(--bg-2);
+  width: min(300px, 88vw);
+  background: var(--bg-1);
   border-left: 1px solid var(--border);
   z-index: 1100;
-  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  overflow: hidden;
   transform: translateX(100%);
   transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
 .drawer.open { transform: translateX(0); }
-.drawer ul { display: flex; flex-direction: column; gap: 1.2rem; }
-.drawer ul a { font-size: 1.1rem; color: var(--text-secondary); }
-.drawer ul a:hover { color: var(--text-primary); }
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.drawer__logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
 .drawer__close {
-  align-self: flex-end;
   background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: border-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.drawer__close:hover { border-color: var(--red); color: var(--red); }
+.drawer__close svg { width: 16px; height: 16px; }
+.drawer__nav {
+  display: flex;
+  flex-direction: column;
+  padding: .5rem 0;
+  flex: 1;
+}
+.drawer__nav a {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-left: 2px solid transparent;
+  transition: color var(--transition), background var(--transition), border-color var(--transition), padding-left var(--transition);
+}
+.drawer__nav a:hover {
+  color: var(--text-primary);
+  background: var(--bg-2);
+  border-left-color: var(--blue);
+  padding-left: 2rem;
+}
+.drawer__footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
 .drawer-overlay {
   display: none;
