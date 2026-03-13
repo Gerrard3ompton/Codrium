@@ -294,7 +294,7 @@
           </div>
           <h3>Book a demo</h3>
           <p>See our platform in action, live</p>
-          <span class="contact__method-value">Schedule a call →</span>
+          <button class="contact__method-value open-booking">Schedule a call →</button>
         </div>
       </div>
 
@@ -368,6 +368,30 @@
     </div>
   </footer>
 
+  <!-- ───────────── BOOKING MODAL ───────────── -->
+  <div class="booking-overlay" id="bookingOverlay">
+    <div class="booking-modal">
+      <button class="booking-modal__close" id="bookingClose">✕</button>
+      <div class="booking-modal__left">
+        <h3>Book a Demo</h3>
+        <p>30 min · Video call</p>
+        <div class="booking-calendar">
+          <div class="booking-calendar__nav">
+            <button class="cal-nav-btn" id="calPrev">‹</button>
+            <span id="calMonthYear"></span>
+            <button class="cal-nav-btn" id="calNext">›</button>
+          </div>
+          <div class="booking-calendar__days-header">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+          <div class="booking-calendar__grid" id="calGrid"></div>
+        </div>
+      </div>
+      <div class="booking-modal__right" id="bookingRight"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
