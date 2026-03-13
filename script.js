@@ -239,22 +239,24 @@ function confirmBooking(name, email, dateStr, time, label) {
   });
 }
 
-document.getElementById('bookingClose').addEventListener('click', closeBookingModal);
-document.getElementById('bookingOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('bookingOverlay')) closeBookingModal();
-});
-document.getElementById('calPrev').addEventListener('click', () => {
-  if (bState.month === 0) { bState.month = 11; bState.year--; } else bState.month--;
-  bState.selectedDate = null;
-  renderCalendar();
-  document.getElementById('bookingRight').innerHTML = '';
-});
-document.getElementById('calNext').addEventListener('click', () => {
-  if (bState.month === 11) { bState.month = 0; bState.year++; } else bState.month++;
-  bState.selectedDate = null;
-  renderCalendar();
-  document.getElementById('bookingRight').innerHTML = '';
-});
-document.querySelectorAll('.open-booking').forEach(el => {
-  el.addEventListener('click', e => { e.preventDefault(); openBookingModal(); });
-});
+if (document.getElementById('bookingOverlay')) {
+  document.getElementById('bookingClose').addEventListener('click', closeBookingModal);
+  document.getElementById('bookingOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('bookingOverlay')) closeBookingModal();
+  });
+  document.getElementById('calPrev').addEventListener('click', () => {
+    if (bState.month === 0) { bState.month = 11; bState.year--; } else bState.month--;
+    bState.selectedDate = null;
+    renderCalendar();
+    document.getElementById('bookingRight').innerHTML = '';
+  });
+  document.getElementById('calNext').addEventListener('click', () => {
+    if (bState.month === 11) { bState.month = 0; bState.year++; } else bState.month++;
+    bState.selectedDate = null;
+    renderCalendar();
+    document.getElementById('bookingRight').innerHTML = '';
+  });
+  document.querySelectorAll('.open-booking').forEach(el => {
+    el.addEventListener('click', e => { e.preventDefault(); openBookingModal(); });
+  });
+}

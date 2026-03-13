@@ -638,6 +638,19 @@ input, textarea, select, button { font-family: inherit; }
   font-size: .82rem;
   color: var(--text-muted);
 }
+.footer__bottom a { color: var(--text-muted); text-decoration: none; transition: color var(--transition); }
+.footer__bottom a:hover { color: var(--text-primary); }
+
+/* ══════════════════════════════════════════
+   LEGAL PAGES
+══════════════════════════════════════════ */
+.legal-page { padding-top: 7rem; }
+.legal-page h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: .5rem; }
+.legal-page .legal-date { color: var(--text-muted); font-size: .88rem; margin-bottom: 3rem; }
+.legal-page h2 { font-family: var(--font-display); font-size: 1.15rem; margin: 2.2rem 0 .6rem; }
+.legal-page p, .legal-page li { color: var(--text-secondary); line-height: 1.8; font-size: .95rem; }
+.legal-page ul { padding-left: 1.5rem; margin-top: .4rem; display: flex; flex-direction: column; gap: .3rem; }
+.legal-page a { color: var(--blue); }
 
 /* ══════════════════════════════════════════
    REVEAL ANIMATIONS
