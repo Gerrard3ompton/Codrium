@@ -49,7 +49,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 /* ── Reveal on scroll ── */
 const revealEls = document.querySelectorAll(
-  '.service-card, .product-card, .testimonial-card, .process__step, .about__card, .stat'
+  '.service-card, .testimonial-card, .process__step, .about__card'
 );
 revealEls.forEach(el => el.classList.add('reveal'));
 
@@ -63,49 +63,6 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 
 revealEls.forEach(el => revealObserver.observe(el));
-
-/* ── Animated stat counters ── */
-function animateCounter(el, target) {
-  const duration = 1800;
-  const start    = performance.now();
-  const update   = now => {
-    const progress = Math.min((now - start) / duration, 1);
-    const ease     = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(ease * target);
-    if (progress < 1) requestAnimationFrame(update);
-    else el.textContent = target;
-  };
-  requestAnimationFrame(update);
-}
-
-const statsSection = document.querySelector('.hero__stats');
-let countersStarted = false;
-const counterObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting && !countersStarted) {
-    countersStarted = true;
-    document.querySelectorAll('.stat__num[data-target]').forEach(el => {
-      animateCounter(el, +el.dataset.target);
-    });
-  }
-}, { threshold: 0.5 });
-
-if (statsSection) counterObserver.observe(statsSection);
-
-/* ── Product card hover tint ── */
-document.querySelectorAll('.product-card').forEach(card => {
-  const color = card.dataset.color;
-  if (!color) return;
-  const r = parseInt(color.slice(1,3), 16);
-  const g = parseInt(color.slice(3,5), 16);
-  const b = parseInt(color.slice(5,7), 16);
-
-  card.addEventListener('mouseenter', () => {
-    card.style.boxShadow = `0 20px 50px rgba(${r},${g},${b},.2)`;
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.boxShadow = '';
-  });
-});
 
 /* ── Contact form ── */
 const form = document.getElementById('contactForm');
