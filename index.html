@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axiums — Software Redefined</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ───────────── NAV ───────────── -->
+  <nav class="nav" id="nav">
+    <a class="nav__logo" href="#">
+      <span class="logo-a">A</span><span style="color:#EA4335">x</span><span style="color:#FBBC04">i</span><span style="color:#4285F4">u</span><span style="color:#34A853">m</span><span style="color:#EA4335">s</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#process">How it works</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="#contact" class="btn btn--outline">Get in touch</a>
+    <button class="nav__burger" id="burger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer">
+    <button class="drawer__close" id="drawerClose">✕</button>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#process">How it works</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="btn btn--primary btn--full">Get in touch</a></li>
+    </ul>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- ───────────── HERO ───────────── -->
+  <section class="hero" id="home">
+    <div class="hero__bg">
+      <div class="orb orb--blue"></div>
+      <div class="orb orb--red"></div>
+      <div class="orb orb--yellow"></div>
+      <div class="orb orb--green"></div>
+      <div class="grid-lines"></div>
+    </div>
+    <div class="hero__content">
+      <div class="hero__badge">
+        <span class="badge-dot"></span> Now accepting custom project requests
+      </div>
+      <h1 class="hero__title">
+        Software built for
+        <span class="gradient-text">the&nbsp;way&nbsp;you&nbsp;work</span>
+      </h1>
+      <p class="hero__sub">
+        Axiums designs, builds, and delivers world-class software — from
+        ready-to-use products to fully bespoke solutions crafted around your
+        business.
+      </p>
+      <div class="hero__cta">
+        <a href="#products" class="btn btn--primary">Explore products</a>
+        <a href="#contact" class="btn btn--ghost">Request custom build →</a>
+      </div>
+      <div class="hero__stats">
+        <div class="stat">
+          <span class="stat__num" data-target="120">0</span><span>+</span>
+          <span class="stat__label">Projects delivered</span>
+        </div>
+        <div class="stat__divider"></div>
+        <div class="stat">
+          <span class="stat__num" data-target="40">0</span><span>+</span>
+          <span class="stat__label">Enterprise clients</span>
+        </div>
+        <div class="stat__divider"></div>
+        <div class="stat">
+          <span class="stat__num" data-target="99">0</span><span>%</span>
+          <span class="stat__label">Client satisfaction</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero__visual">
+      <div class="code-window">
+        <div class="code-window__bar">
+          <span class="dot dot--red"></span>
+          <span class="dot dot--yellow"></span>
+          <span class="dot dot--green"></span>
+          <span class="code-window__title">axiums.config.ts</span>
+        </div>
+        <pre class="code-window__body"><code><span class="c-kw">import</span> <span class="c-fn">Axiums</span> <span class="c-kw">from</span> <span class="c-str">'@axiums/core'</span><span class="c-pun">;</span>
+
+<span class="c-kw">const</span> <span class="c-fn">app</span> <span class="c-pun">=</span> <span class="c-kw">new</span> <span class="c-fn">Axiums</span><span class="c-pun">({</span>
+  <span class="c-prop">name</span><span class="c-pun">:</span> <span class="c-str">'YourProduct'</span><span class="c-pun">,</span>
+  <span class="c-prop">modules</span><span class="c-pun">:</span> <span class="c-pun">[</span>
+    <span class="c-str">'auth'</span><span class="c-pun">,</span>
+    <span class="c-str">'analytics'</span><span class="c-pun">,</span>
+    <span class="c-str">'payments'</span><span class="c-pun">,</span>
+  <span class="c-pun">],</span>
+  <span class="c-prop">scale</span><span class="c-pun">:</span> <span class="c-str">'enterprise'</span><span class="c-pun">,</span>
+<span class="c-pun">});</span>
+
+<span class="c-fn">app</span><span class="c-pun">.</span><span class="c-fn">launch</span><span class="c-pun">();</span>
+<span class="c-comment">// ✓ Ready to ship 🚀</span></code></pre>
+        <div class="code-cursor"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── SERVICES ───────────── -->
+  <section class="section" id="services">
+    <div class="container">
+      <p class="section__label">What we do</p>
+      <h2 class="section__title">Two ways to work with us</h2>
+      <p class="section__sub">Whether you need a proven solution out of the box or something built exactly to spec, Axiums has you covered.</p>
+      <div class="services__grid">
+
+        <div class="service-card service-card--blue">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+          </div>
+          <h3>Off-the-shelf Software</h3>
+          <p>Powerful, polished products ready to deploy today. Built for teams who need results fast without sacrificing quality.</p>
+          <ul class="service-card__list">
+            <li>Instant deployment</li>
+            <li>Regular updates included</li>
+            <li>Flexible licensing</li>
+            <li>Dedicated support</li>
+          </ul>
+          <a href="#products" class="service-card__link">Browse products →</a>
+        </div>
+
+        <div class="service-card service-card--multi">
+          <div class="service-card__badge">Most popular</div>
+          <div class="service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Custom Software Development</h3>
+          <p>Your vision, our craftsmanship. We design and engineer bespoke software tailored precisely to your business needs.</p>
+          <ul class="service-card__list">
+            <li>Discovery &amp; requirements</li>
+            <li>Full-stack development</li>
+            <li>QA &amp; security testing</li>
+            <li>Post-launch maintenance</li>
+          </ul>
+          <a href="#contact" class="service-card__link">Start a project →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── PRODUCTS ───────────── -->
+  <section class="section section--alt" id="products">
+    <div class="container">
+      <p class="section__label">Our products</p>
+      <h2 class="section__title">Axiums software suite</h2>
+      <p class="section__sub">Each product is engineered for performance, security, and scalability from day one.</p>
+      <div class="products__grid">
+
+        <div class="product-card" data-color="#4285F4">
+          <div class="product-card__stripe" style="background:#4285F4"></div>
+          <div class="product-card__icon" style="color:#4285F4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3>Axiums Flow</h3>
+          <p class="product-card__tag">Workflow Automation</p>
+          <p>Drag-and-drop business process automation that connects your tools and eliminates repetitive work.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">From $49 / mo</span>
+            <a href="#contact" class="btn btn--sm btn--outline">Learn more</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-color="#EA4335">
+          <div class="product-card__stripe" style="background:#EA4335"></div>
+          <div class="product-card__icon" style="color:#EA4335">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </div>
+          <h3>Axiums Insight</h3>
+          <p class="product-card__tag">Analytics &amp; Reporting</p>
+          <p>Real-time dashboards and AI-powered reports that turn raw data into actionable business intelligence.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">From $79 / mo</span>
+            <a href="#contact" class="btn btn--sm btn--outline">Learn more</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-color="#FBBC04">
+          <div class="product-card__stripe" style="background:#FBBC04"></div>
+          <div class="product-card__icon" style="color:#FBBC04">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+          </div>
+          <h3>Axiums Vault</h3>
+          <p class="product-card__tag">Secure Document Management</p>
+          <p>Enterprise-grade document storage, versioning, and access control with end-to-end encryption.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">From $39 / mo</span>
+            <a href="#contact" class="btn btn--sm btn--outline">Learn more</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-color="#34A853">
+          <div class="product-card__stripe" style="background:#34A853"></div>
+          <div class="product-card__icon" style="color:#34A853">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Axiums Connect</h3>
+          <p class="product-card__tag">Team Collaboration</p>
+          <p>Unified communication hub — channels, video, tasks, and shared workspaces in a single platform.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">From $19 / mo</span>
+            <a href="#contact" class="btn btn--sm btn--outline">Learn more</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── PROCESS ───────────── -->
+  <section class="section" id="process">
+    <div class="container">
+      <p class="section__label">How it works</p>
+      <h2 class="section__title">From idea to launch in four steps</h2>
+      <div class="process__track">
+
+        <div class="process__step">
+          <div class="process__num" style="background:#4285F4">01</div>
+          <div class="process__line" style="--line-color:#4285F4"></div>
+          <h3>Discovery Call</h3>
+          <p>We listen to your goals, challenges, and technical requirements to shape the right solution.</p>
+        </div>
+
+        <div class="process__step">
+          <div class="process__num" style="background:#EA4335">02</div>
+          <div class="process__line" style="--line-color:#EA4335"></div>
+          <h3>Design &amp; Proposal</h3>
+          <p>Our team produces wireframes, architecture plans, and a detailed proposal for your approval.</p>
+        </div>
+
+        <div class="process__step">
+          <div class="process__num" style="background:#FBBC04">03</div>
+          <div class="process__line" style="--line-color:#FBBC04"></div>
+          <h3>Build &amp; Iterate</h3>
+          <p>We develop in agile sprints with regular demos so you stay informed and in control throughout.</p>
+        </div>
+
+        <div class="process__step">
+          <div class="process__num" style="background:#34A853">04</div>
+          <div class="process__line process__line--last" style="--line-color:#34A853"></div>
+          <h3>Launch &amp; Support</h3>
+          <p>We deploy your software, train your team, and provide ongoing maintenance and feature updates.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── TESTIMONIALS ───────────── -->
+  <section class="section section--alt" id="testimonials">
+    <div class="container">
+      <p class="section__label">Clients</p>
+      <h2 class="section__title">Trusted by teams worldwide</h2>
+      <div class="testimonials__grid">
+
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p>"Axiums delivered our custom CRM in eight weeks — exactly on spec and ahead of schedule. The quality was exceptional."</p>
+          <div class="testimonial-card__author">
+            <div class="avatar avatar--blue">JR</div>
+            <div>
+              <strong>James Rodriguez</strong>
+              <span>CTO, NovaTech Solutions</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p>"Axiums Insight transformed how we report to stakeholders. Data that used to take days now appears in real time."</p>
+          <div class="testimonial-card__author">
+            <div class="avatar avatar--red">SK</div>
+            <div>
+              <strong>Sarah Kim</strong>
+              <span>Head of Analytics, Meridian Group</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p>"Their team felt like an extension of ours. Communication was flawless, and the final product exceeded expectations."</p>
+          <div class="testimonial-card__author">
+            <div class="avatar avatar--green">MP</div>
+            <div>
+              <strong>Marcus Petrov</strong>
+              <span>Founder, Elevate Digital</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── ABOUT ───────────── -->
+  <section class="section" id="about">
+    <div class="container about__grid">
+      <div class="about__copy">
+        <p class="section__label">About Axiums</p>
+        <h2 class="section__title">We believe software should work for you</h2>
+        <p>Axiums was founded on a simple idea: great software shouldn't be reserved for the biggest companies. We combine the engineering rigour of a top-tier tech firm with the agility of a startup to deliver solutions that actually fit your world.</p>
+        <p>Our multidisciplinary team spans product design, full-stack engineering, DevOps, and cybersecurity — so every product we ship is beautiful, fast, and secure.</p>
+        <div class="about__pills">
+          <span class="pill" style="border-color:#4285F4;color:#4285F4">Web &amp; Mobile</span>
+          <span class="pill" style="border-color:#EA4335;color:#EA4335">AI &amp; ML</span>
+          <span class="pill" style="border-color:#FBBC04;color:#FBBC04">Cloud &amp; DevOps</span>
+          <span class="pill" style="border-color:#34A853;color:#34A853">Cybersecurity</span>
+          <span class="pill" style="border-color:#4285F4;color:#4285F4">Data Engineering</span>
+          <span class="pill" style="border-color:#EA4335;color:#EA4335">UI / UX Design</span>
+        </div>
+      </div>
+      <div class="about__visual">
+        <div class="about__card about__card--tl">
+          <span style="color:#4285F4;font-size:1.5rem">✦</span>
+          <p>Clean, maintainable code you'll actually own.</p>
+        </div>
+        <div class="about__card about__card--br">
+          <span style="color:#34A853;font-size:1.5rem">✦</span>
+          <p>Built to scale from Day 1 to Day 10,000.</p>
+        </div>
+        <div class="about__logo-center">
+          <span class="logo-a">A</span><span style="color:#EA4335">x</span><span style="color:#FBBC04">i</span><span style="color:#4285F4">u</span><span style="color:#34A853">m</span><span style="color:#EA4335">s</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── CONTACT ───────────── -->
+  <section class="section section--alt contact" id="contact">
+    <div class="container">
+
+      <div class="contact__header">
+        <p class="section__label">Get in touch</p>
+        <h2 class="section__title">How can we help?</h2>
+        <p>Tell us what you're working on and we'll connect you with the right team.</p>
+      </div>
+
+      <div class="contact__methods">
+        <div class="contact__method">
+          <div class="contact__method-icon" style="color:#4285F4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          </div>
+          <h3>Email us</h3>
+          <p>Get a response within 1 business day</p>
+          <span class="contact__method-value">hello@axiums.dev</span>
+        </div>
+        <div class="contact__method">
+          <div class="contact__method-icon" style="color:#34A853">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.72 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.36 1.85.6 2.81.72a2 2 0 0 1 1.72 2z"/></svg>
+          </div>
+          <h3>Call us</h3>
+          <p>Mon – Fri, 9 am – 6 pm EST</p>
+          <span class="contact__method-value">+1 (800) AXIUMS-01</span>
+        </div>
+        <div class="contact__method">
+          <div class="contact__method-icon" style="color:#FBBC04">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <h3>Book a demo</h3>
+          <p>See our platform in action, live</p>
+          <span class="contact__method-value">Schedule a call →</span>
+        </div>
+      </div>
+
+      <div class="contact__form-wrap">
+        <form class="contact__form" id="contactForm">
+          <div class="form__row">
+            <div class="form__group">
+              <label for="name">Your name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+            </div>
+            <div class="form__group">
+              <label for="email">Work email</label>
+              <input type="email" id="email" name="email" placeholder="jane@company.com" required />
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Your company name" />
+          </div>
+          <div class="form__group">
+            <label for="service">I'm interested in</label>
+            <select id="service" name="service">
+              <option value="">Select a service…</option>
+              <option>Custom software development</option>
+              <option>Axiums Flow</option>
+              <option>Axiums Insight</option>
+              <option>Axiums Vault</option>
+              <option>Axiums Connect</option>
+              <option>General enquiry</option>
+            </select>
+          </div>
+          <div class="form__group">
+            <label for="message">Tell us about your project</label>
+            <textarea id="message" name="message" rows="4" placeholder="Share as much or as little as you'd like…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">Send message</button>
+          <p class="form__note">We typically respond within 1 business day.</p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───────────── FOOTER ───────────── -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a class="nav__logo" href="#">
+          <span class="logo-a">A</span><span style="color:#EA4335">x</span><span style="color:#FBBC04">i</span><span style="color:#4285F4">u</span><span style="color:#34A853">m</span><span style="color:#EA4335">s</span>
+        </a>
+        <p>Software built for the way you work.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4>Products</h4>
+          <a href="#products">Axiums Flow</a>
+          <a href="#products">Axiums Insight</a>
+          <a href="#products">Axiums Vault</a>
+          <a href="#products">Axiums Connect</a>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <a href="#services">Custom Development</a>
+          <a href="#process">Our Process</a>
+          <a href="#contact">Request a Quote</a>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <a href="#about">About us</a>
+          <a href="#testimonials">Clients</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Axiums Software Inc. All rights reserved.</span>
+      <span>Privacy · Terms · Cookies</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
