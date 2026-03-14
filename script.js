@@ -203,7 +203,16 @@ function confirmBooking(name, email, dateStr, time, label) {
 
   const calTitle   = encodeURIComponent('Demo Call — Codrium');
   const calDetails = encodeURIComponent(`Booked by: ${name}\nEmail: ${email}\n\nWe look forward to speaking with you!`);
-  const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${start}/${end}&details=${calDetails}`;
+
+  // Google Calendar URL
+  const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${start}/${end}&details=${calDetails}`;
+
+  // Outlook Calendar URL
+  const startISO = `${y}-${mo}-${d}T${h}:${m}:00`;
+  let eh2 = parseInt(h), em2 = parseInt(m) + 30;
+  if (em2 >= 60) { eh2 += 1; em2 -= 60; }
+  const endISO = `${y}-${mo}-${d}T${String(eh2).padStart(2,'0')}:${String(em2).padStart(2,'0')}:00`;
+  const outlookCalUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${calTitle}&startdt=${encodeURIComponent(startISO)}&enddt=${encodeURIComponent(endISO)}&body=${calDetails}`;
 
   const right = document.getElementById('bookingRight');
   right.innerHTML = `
@@ -213,17 +222,18 @@ function confirmBooking(name, email, dateStr, time, label) {
     </div>`;
 
   emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-    to_name:      name,
-    to_email:     email,
-    booking_date: label,
-    booking_time: time,
-    calendar_url: calUrl,
+    to_name:         name,
+    to_email:        email,
+    booking_date:    label,
+    booking_time:    time,
+    calendar_url:    googleCalUrl,
+    outlook_cal_url: outlookCalUrl,
   }).then(() => {
     right.innerHTML = `
       <div class="booking-confirmed">
         <div class="booking-confirmed__icon">✓</div>
         <h4>All set!</h4>
-        <p>A confirmation email has been sent to <strong>${email}</strong> with a button to add the event to your Google Calendar.</p>
+        <p>A confirmation email has been sent to <strong>${email}</strong> with buttons to add the event to your calendar.</p>
         <button class="btn btn--outline" id="bookingDone">Close</button>
       </div>`;
     document.getElementById('bookingDone').addEventListener('click', closeBookingModal);
@@ -232,7 +242,7 @@ function confirmBooking(name, email, dateStr, time, label) {
       <div class="booking-confirmed">
         <div class="booking-confirmed__icon" style="background:var(--red)">✕</div>
         <h4>Email failed</h4>
-        <p>We couldn't send the confirmation email. <a href="${calUrl}" target="_blank" style="color:var(--blue)">Click here</a> to add the event to your calendar manually.</p>
+        <p>We couldn't send the confirmation email. <a href="${googleCalUrl}" target="_blank" style="color:var(--blue)">Click here</a> to add the event to your calendar manually.</p>
         <button class="btn btn--outline" id="bookingDone">Close</button>
       </div>`;
     document.getElementById('bookingDone').addEventListener('click', closeBookingModal);
