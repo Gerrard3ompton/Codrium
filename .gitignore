@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Environment variables — never commit real credentials
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db

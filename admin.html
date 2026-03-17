@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Codrium</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <style>
+    /* ── Admin layout ── */
+    .admin-body {
+      min-height: 100vh;
+      background: var(--bg-0);
+      padding-top: 72px;
+    }
+
+    /* ── Admin nav ── */
+    .admin-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2.5rem;
+      background: rgba(8,12,16,.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="light"] .admin-nav { background: rgba(250,247,242,.88); }
+    .admin-nav__back {
+      font-size: .88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      transition: color var(--transition);
+    }
+    .admin-nav__back:hover { color: var(--text-primary); }
+    .admin-nav__badge {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: .22rem .7rem;
+      border-radius: 50px;
+      background: var(--bg-3);
+      color: var(--text-secondary);
+      margin-left: .25rem;
+    }
+    .admin-nav__right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    /* ── Page header ── */
+    .admin-header {
+      padding: 3rem 0 2rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .admin-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: .3rem;
+    }
+    .admin-header p { color: var(--text-secondary); font-size: .95rem; }
+
+    /* ── Products table ── */
+    .table-wrap {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .products-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .products-table thead tr {
+      background: var(--bg-3);
+    }
+    .products-table th {
+      padding: .85rem 1.25rem;
+      text-align: left;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .products-table td {
+      padding: 1rem 1.25rem;
+      font-size: .9rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .products-table tbody tr:last-child td { border-bottom: none; }
+    .products-table tbody tr:hover td { background: var(--bg-2); }
+    .products-table .td-name { font-weight: 600; }
+    .products-table .td-desc {
+      color: var(--text-secondary);
+      font-size: .87rem;
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .products-table .td-actions {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .td-actions .btn--sm { padding: .38rem .9rem; font-size: .8rem; }
+    .btn--danger { color: var(--red); }
+    .btn--danger:hover { background: rgba(234,67,53,.1); color: var(--red); }
+
+    /* Inline delete confirmation */
+    .delete-confirm {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .83rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .delete-confirm strong { color: var(--red); }
+
+    /* Table state (loading / empty / error) */
+    .table-state {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+    .table-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .table-state p { max-width: 40ch; margin: .5rem auto 0; font-size: .9rem; }
+
+    /* Status badges — reusing products.html pattern */
+    .status-badge {
+      display: inline-block;
+      border-radius: 50px;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .status-badge--active      { background: linear-gradient(135deg, var(--green), #2dbe5c); }
+    .status-badge--beta        { background: linear-gradient(135deg, var(--blue), #5b9cf6); }
+    .status-badge--coming-soon { background: linear-gradient(135deg, var(--yellow), #f5a623); color: #1a1400; }
+    .status-badge--deprecated  { background: var(--bg-3); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* ── Add / Edit modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-panel {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 40px 100px rgba(0,0,0,.5);
+      width: 100%;
+      max-width: 520px;
+      padding: 2.5rem;
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+      transform: translateY(12px);
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .modal-overlay.open .modal-panel { transform: translateY(0); }
+    .modal-panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1.6rem;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: .3rem .45rem;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition), background var(--transition);
+      line-height: 1;
+      font-size: 1.1rem;
+    }
+    .modal-close:hover { color: var(--text-primary); background: var(--bg-2); }
+    .modal-fields { display: flex; flex-direction: column; gap: 1.1rem; }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: .75rem;
+      margin-top: 1.8rem;
+    }
+    .form-hint {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: .3rem;
+    }
+
+    /* ── Login overlay ── */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9000;
+      padding: 1rem;
+    }
+    .login-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.5);
+    }
+    .login-card .logo-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1.6rem;
+    }
+    .login-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: .3rem;
+    }
+    .login-card p { color: var(--text-secondary); font-size: .9rem; margin-bottom: 1.5rem; }
+    .login-error {
+      color: var(--red);
+      font-size: .85rem;
+      margin-top: .75rem;
+      display: none;
+    }
+    .login-error.show { display: block; }
+
+    /* ── Toast notifications ── */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 8000;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .toast {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: .75rem 1.25rem;
+      font-size: .9rem;
+      color: var(--text-primary);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      animation: toastIn .25s ease;
+      max-width: 320px;
+    }
+    .toast--success { border-left: 3px solid var(--green); }
+    .toast--error   { border-left: 3px solid var(--red); }
+    @keyframes toastIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    @media (max-width: 768px) {
+      .admin-header { flex-direction: column; align-items: flex-start; }
+      .products-table .td-desc { display: none; }
+      .products-table .th-desc { display: none; }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- ── LOGIN OVERLAY ── -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="logo-row">
+        <span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;">
+          <span class="logo-a">C</span><span style="color:#EA4335">o</span><span style="color:#FBBC04">d</span><span style="color:#4285F4">r</span><span style="color:#34A853">i</span><span style="color:#EA4335">u</span><span style="color:#FBBC04">m</span>
+        </span>
+        <span class="admin-nav__badge">Admin</span>
+      </div>
+      <h2>Sign in</h2>
+      <p>Enter your admin password to continue.</p>
+      <div class="form__group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" placeholder="••••••••••••" autocomplete="current-password" />
+      </div>
+      <p class="login-error" id="loginError">Incorrect password. Please try again.</p>
+      <div style="margin-top:1.2rem;">
+        <button class="btn btn--primary btn--full" id="loginBtn">Sign in</button>
+      </div>
+      <div style="margin-top:1rem;text-align:center;">
+        <a href="index.html" style="font-size:.87rem;color:var(--text-secondary);transition:color var(--transition);" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">← Back to site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADMIN NAV ── -->
+  <nav class="admin-nav">
+    <span style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;">
+      <span class="logo-a">C</span><span style="color:#EA4335">o</span><span style="color:#FBBC04">d</span><span style="color:#4285F4">r</span><span style="color:#34A853">i</span><span style="color:#EA4335">u</span><span style="color:#FBBC04">m</span>
+    </span>
+    <span class="admin-nav__badge">Admin</span>
+    <a href="index.html" class="admin-nav__back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to site
+    </a>
+    <div class="admin-nav__right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="btn btn--ghost btn--sm" id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main>
+    <div class="container">
+
+      <!-- Page header -->
+      <div class="admin-header">
+        <div>
+          <h1>Products</h1>
+          <p>Add, edit, and remove products shown on the products page.</p>
+        </div>
+        <button class="btn btn--primary" id="addProductBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Product
+        </button>
+      </div>
+
+      <!-- Products table -->
+      <div class="table-wrap">
+        <table class="products-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th class="th-desc">Description</th>
+              <th>Features</th>
+              <th>Added</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr>
+              <td colspan="6">
+                <div class="table-state">
+                  <div class="table-spinner"></div>
+                  <p>Loading products…</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── ADD / EDIT MODAL ── -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <h2 id="modalTitle">Add Product</h2>
+      <div class="modal-fields">
+        <div class="form__group">
+          <label for="fieldName">Name <span style="color:var(--red)">*</span></label>
+          <input type="text" id="fieldName" placeholder="e.g. Codrium CRM" maxlength="80" />
+        </div>
+        <div class="form__group">
+          <label for="fieldDescription">Description</label>
+          <textarea id="fieldDescription" rows="3" placeholder="A short description of the product…" maxlength="400"></textarea>
+        </div>
+        <div class="form__group">
+          <label for="fieldFeatures">Features</label>
+          <textarea id="fieldFeatures" rows="4" placeholder="One feature per line&#10;e.g.&#10;Real-time sync&#10;Multi-user support"></textarea>
+          <span class="form-hint">One feature per line — each line becomes a bullet point on the product card.</span>
+        </div>
+        <div class="form__group">
+          <label for="fieldStatus">Status</label>
+          <select id="fieldStatus">
+            <option value="active">Active</option>
+            <option value="beta">Beta</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="deprecated">Deprecated</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--ghost" id="modalCancel">Cancel</button>
+        <button class="btn btn--primary" id="modalSave">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST CONTAINER ── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="db.js"></script>
+  <script>
+    /* ── Constants ── */
+    const ADMIN_PASS    = 'Codrium2026Start';
+    const SESSION_KEY   = 'codrium_admin_auth';
+
+    const STATUS_LABELS = {
+      'active':      'Active',
+      'beta':        'Beta',
+      'coming-soon': 'Coming Soon',
+      'deprecated':  'Deprecated',
+    };
+
+    /* ── Theme (mirrors script.js logic, no dependency) ── */
+    (function () {
+      const saved = localStorage.getItem('theme');
+      const pref  = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = saved || pref;
+    })();
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+    });
+
+    /* ── Login ── */
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginError   = document.getElementById('loginError');
+
+    function checkAuth() {
+      if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        loginOverlay.style.display = 'none';
+        loadProducts();
+      }
+    }
+
+    function attemptLogin() {
+      const val = document.getElementById('adminPassword').value;
+      if (val === ADMIN_PASS) {
+        sessionStorage.setItem(SESSION_KEY, '1');
+        loginOverlay.style.display = 'none';
+        loginError.classList.remove('show');
+        loadProducts();
+      } else {
+        loginError.classList.add('show');
+        document.getElementById('adminPassword').focus();
+      }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', attemptLogin);
+    document.getElementById('adminPassword').addEventListener('keydown', e => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      document.getElementById('adminPassword').value = '';
+      loginError.classList.remove('show');
+      loginOverlay.style.display = 'flex';
+    });
+
+    checkAuth();
+
+    /* ── Toast ── */
+    function showToast(msg, type = 'success') {
+      const wrap = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = `toast toast--${type}`;
+      t.innerHTML = type === 'success'
+        ? `<span style="color:var(--green)">✓</span> ${msg}`
+        : `<span style="color:var(--red)">✕</span> ${msg}`;
+      wrap.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    /* ── Table rendering ── */
+    async function loadProducts() {
+      const tbody = document.getElementById('productsTableBody');
+      tbody.innerHTML = `<tr><td colspan="6"><div class="table-state"><div class="table-spinner"></div><p>Loading products…</p></div></td></tr>`;
+
+      try {
+        const products = await getProducts();
+
+        if (products.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="table-state"><p>No products yet. Click <strong>Add Product</strong> to get started.</p></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = products.map(p => buildRow(p)).join('');
+      } catch {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="table-state"><p style="color:var(--red)">Could not reach the API. Make sure the server is running on port 3000.</p></div></td></tr>`;
+      }
+    }
+
+    function buildRow(p) {
+      const date = p.createdAt
+        ? new Date(p.createdAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+        : '—';
+
+      const featureCount = Array.isArray(p.features) ? p.features.length : 0;
+
+      return `
+        <tr data-id="${p.id}">
+          <td class="td-name">${escHtml(p.name)}</td>
+          <td><span class="status-badge status-badge--${p.status}">${STATUS_LABELS[p.status] || p.status}</span></td>
+          <td class="td-desc">${escHtml(p.description || '—')}</td>
+          <td style="color:var(--text-secondary)">${featureCount} feature${featureCount !== 1 ? 's' : ''}</td>
+          <td style="color:var(--text-secondary);white-space:nowrap">${date}</td>
+          <td>
+            <div class="td-actions">
+              <button class="btn btn--outline btn--sm" onclick="openEditModal('${p.id}')">Edit</button>
+              <button class="btn btn--ghost btn--sm btn--danger" onclick="showDeleteConfirm(this, '${p.id}', ${JSON.stringify(escHtml(p.name))})">Delete</button>
+            </div>
+          </td>
+        </tr>`;
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ── Inline delete confirmation ── */
+    function showDeleteConfirm(btn, id, name) {
+      const actionsDiv = btn.closest('.td-actions');
+      actionsDiv.innerHTML = `
+        <span class="delete-confirm">
+          Delete <strong>${name}</strong>?
+          <button class="btn btn--sm btn--primary" onclick="confirmDelete('${id}', this)" style="background:var(--red);box-shadow:none">Yes, delete</button>
+          <button class="btn btn--ghost btn--sm" onclick="cancelDelete(this)">Cancel</button>
+        </span>`;
+    }
+
+    function cancelDelete(btn) {
+      const row = btn.closest('tr');
+      const id  = row.dataset.id;
+      // Reload the full table to restore original buttons
+      loadProducts();
+    }
+
+    async function confirmDelete(id, btn) {
+      btn.disabled = true;
+      btn.textContent = 'Deleting…';
+      try {
+        await deleteProduct(id);
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+        if (row) row.style.animation = 'toastIn .2s ease reverse forwards';
+        setTimeout(() => loadProducts(), 200);
+        showToast('Product deleted.');
+      } catch {
+        showToast('Failed to delete product.', 'error');
+        loadProducts();
+      }
+    }
+
+    /* ── Add / Edit modal ── */
+    let editingId = null;
+
+    const modal      = document.getElementById('productModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSave  = document.getElementById('modalSave');
+
+    function openModal() {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('fieldName').focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      editingId = null;
+      // Clear fields
+      document.getElementById('fieldName').value        = '';
+      document.getElementById('fieldDescription').value = '';
+      document.getElementById('fieldFeatures').value    = '';
+      document.getElementById('fieldStatus').value      = 'active';
+    }
+
+    document.getElementById('addProductBtn').addEventListener('click', () => {
+      editingId = null;
+      modalTitle.textContent  = 'Add Product';
+      modalSave.textContent   = 'Save Product';
+      openModal();
+    });
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+    async function openEditModal(id) {
+      editingId = id;
+      modalTitle.textContent = 'Edit Product';
+      modalSave.textContent  = 'Save Changes';
+
+      // Pre-fill from existing row data via API
+      try {
+        const p = await getProduct(id);
+        document.getElementById('fieldName').value        = p.name;
+        document.getElementById('fieldDescription').value = p.description || '';
+        document.getElementById('fieldFeatures').value    = Array.isArray(p.features) ? p.features.join('\n') : '';
+        document.getElementById('fieldStatus').value      = p.status;
+      } catch {
+        showToast('Could not load product details.', 'error');
+        return;
+      }
+
+      openModal();
+    }
+
+    modalSave.addEventListener('click', async () => {
+      const name        = document.getElementById('fieldName').value.trim();
+      const description = document.getElementById('fieldDescription').value.trim();
+      const featuresRaw = document.getElementById('fieldFeatures').value;
+      const status      = document.getElementById('fieldStatus').value;
+
+      if (!name) {
+        document.getElementById('fieldName').focus();
+        showToast('Product name is required.', 'error');
+        return;
+      }
+
+      const features = featuresRaw
+        .split('\n')
+        .map(f => f.trim())
+        .filter(Boolean);
+
+      modalSave.disabled    = true;
+      modalSave.textContent = 'Saving…';
+
+      try {
+        if (editingId) {
+          await updateProduct(editingId, { name, description, features, status });
+          showToast('Product updated.');
+        } else {
+          await addProduct({ name, description, features, status });
+          showToast('Product added.');
+        }
+        closeModal();
+        loadProducts();
+      } catch (err) {
+        showToast(err.message || 'Failed to save product.', 'error');
+      } finally {
+        modalSave.disabled    = false;
+        modalSave.textContent = editingId ? 'Save Changes' : 'Save Product';
+      }
+    });
+  </script>
+
+</body>
+</html>
