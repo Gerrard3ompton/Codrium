@@ -1,0 +1,18 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger webhook
+        run: |
+          BODY='{}'
+          SIG="sha256=$(echo -n "$BODY" | openssl dgst -sha256 -hmac '${{ secrets.DEPLOY_SECRET }}' | cut -d' ' -f2)"
+          curl -f -X POST https://codrium.com/webhook \
+            -H "Content-Type: application/json" \
+            -H "X-Hub-Signature-256: $SIG" \
+            -d "$BODY"
