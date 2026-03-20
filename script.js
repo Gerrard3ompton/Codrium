@@ -93,7 +93,7 @@ sections.forEach(s => linkObserver.observe(s));
 /* ── Booking Modal ── */
 // ⚠️ Replace these three values with your own from emailjs.com
 const EMAILJS_PUBLIC_KEY  = 'bslzqiJBtGR0tj0Es';
-const EMAILJS_SERVICE_ID  = 'service_464oryq';
+const EMAILJS_SERVICE_ID  = 'service_9udss6i';
 const EMAILJS_TEMPLATE_ID = 'template_8psmwbl';
 emailjs.init(EMAILJS_PUBLIC_KEY);
 const SLOTS  = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
