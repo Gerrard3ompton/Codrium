@@ -10,7 +10,7 @@
    needs to change.
 ───────────────────────────────────────────── */
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'https://api.codrium.com';
 
 /* ──────────────────────────────────────────
    GET all products
